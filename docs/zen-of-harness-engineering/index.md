@@ -56,3 +56,14 @@ hide:
 从一个轻量的追问 Skill 出发，讨论 Taste Injection、执行过程中的不确定性，以及 Shared Context Folder、Issue / PR 和设计追问组成的三层控制体系。
 
 :octicons-clock-24: 9 min &nbsp; [:octicons-arrow-right-24: 阅读全文](./why-grill-me/)
+
+---
+
+### :material-progress-wrench: [Harness 优化实践：Agent 工具优化｜agy-staff 迭代随笔](./agy-staff-iteration/)
+
+> *"可观测是一种能力，但不意味着需要一直观测。"*
+
+记录 agy-staff 从 0.4 到 0.7 的迭代演进：允许脏工作区继续任务、引入流式进展 observe 与 attention lease 机制、以及 `/agy:lead` 编排模式。从外部插件与宿主协作的实战痛点出发，探讨由 Agent 决策、支持渐进式披露的 Agent-native tools 设计取舍。
+
+:octicons-clock-24: 8 min &nbsp; [:octicons-arrow-right-24: 阅读全文](./agy-staff-iteration/)
+
