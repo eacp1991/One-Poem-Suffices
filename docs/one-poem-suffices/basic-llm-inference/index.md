@@ -2,7 +2,9 @@
 
 `⏰ Read: 30min`
 
-> 惭愧，在我阅读很多其他 LLM 相关的文章时，发现我对 LLM 的 Inference/Sampling 的过程不够了解。基础不牢，地动山摇。所以我尝试先理解基础的 LLM Inference Pipeline。
+!!! note "写在前面"
+
+    惭愧，在我阅读很多其他 LLM 相关的文章时，发现我对 LLM 的 Inference/Sampling 的过程不够了解。基础不牢，地动山摇。所以我尝试先理解基础的 LLM Inference Pipeline。
 
 ## 0. Goal
 
@@ -13,7 +15,9 @@
 
 ## 1. Pre-Knowledge
 
-> 该章节介绍 Generation 将涉及到的元知识。【📖预计：`8min`】
+!!! info "本章内容"
+
+    该章节介绍 Generation 将涉及到的元知识。【📖预计：`8min`】
 
 ### 1.1. Temperature
 
@@ -98,7 +102,9 @@ def generate(
 
 <img src="./assets/auto-regressive-sampling.png" alt="auto-regressive-sampling" style="zoom:25%;" />
 
-> 当然，我必须承认如果你不了解 KV Cache 的原理，可能比较难理解 tokens 在模型内部是如何计算的。但是，我认为这并不影响你去理解/去感受 LLM 基本的 generation pipeline，如果在此深入分析反而破坏了阅读的流畅性。你目前可以假设这是直觉的，正确的，我会尽力在后续的博客中介绍并在此引用，现在请你继续阅读吧。
+!!! note "关于 KV Cache 的说明"
+
+    当然，我必须承认如果你不了解 KV Cache 的原理，可能比较难理解 tokens 在模型内部是如何计算的。但是，我认为这并不影响你去理解/去感受 LLM 基本的 generation pipeline，如果在此深入分析反而破坏了阅读的流畅性。你目前可以假设这是直觉的，正确的，我会尽力在后续的博客中介绍并在此引用，现在请你继续阅读吧。
 
 ### 2.3. Goal2: How to batch inference?
 
@@ -108,7 +114,9 @@ def generate(
 
 我们重点关注两个长度 `min_prompt_length` 和 `total_length`，第一个长度很好理解就是输入 batch 中最短 prompt 的序列长度；第二个长度稍为复杂一点，代表 batch 可能的最长长度。
 
-> `total_length` 的计算代码为 `total_len = min(params.max_seq_len, max_gen_len + max_prompt_len)`。看了代码就很容易理解，在 inference 前我们需要申请内存（tensor），`total_length` 就是计算用来内存预分配的。
+!!! note "total_length 的计算与内存预分配"
+
+    `total_length` 的计算代码为 `total_len = min(params.max_seq_len, max_gen_len + max_prompt_len)`。看了代码就很容易理解，在 inference 前我们需要申请内存（tensor），`total_length` 就是计算用来内存预分配的。
 
 现在第一个要点来了，我们应该从哪个位置开始生成？最理想的情况下肯定是 batch 中的每个 sequence 能直接生成它们的下一个 token，做到一点不浪费（包括我最开始也在想难道就是这样，哈哈）。但是，model 处理的肯定是相同长度的 tensor 而我们无法保证 batch 中各 sequence 长度一致。所以 **batch inference 最开始上是从 `min_prompt_length` 开始生成**。（参考动图中的 Step1）
 
@@ -122,7 +130,9 @@ def generate(
 
 <img src="./assets/batch-inference.gif" alt="batch-inference" />
 
-> Goal 1/2 中的两张图片可能对你了解 llm-inference 很有帮助。由于我花了挺长时间制作这个图片和动图，为了节约大家的时间（也不想打水印），我将可视化 PPT 开源到了 [`visualization/Basic-LLM-Inference.pptx`](https://github.com/keli-wen/AGI-Study/blob/master/visualization/Basic-LLM-Inference.pptx) 文件中。
+!!! tip "开源可视化 PPT"
+
+    Goal 1/2 中的两张图片可能对你了解 llm-inference 很有帮助。由于我花了挺长时间制作这个图片和动图，为了节约大家的时间（也不想打水印），我将可视化 PPT 开源到了 [`visualization/Basic-LLM-Inference.pptx`](https://github.com/keli-wen/AGI-Study/blob/master/visualization/Basic-LLM-Inference.pptx) 文件中。
 
 通过理解 LLM 是如何进行 batch inference 后，我们也能发现该范式存在大量的冗余计算和性能浪费，存在很大的优化空间。这也是后续 Continuous batching 推出的必然原因。
 

@@ -84,13 +84,18 @@ $$
 
 首先是激活值（Activations），举一个例子用序列长度为 1K、批量大小为 32 去训练 1.5B 参数的 GPT-2 模型需要约 60 GB 的内存[^1]。这开销显然是非常大的，一个常见的优化方法是 Activation checkpointing，使用该方法后可以将内存开销降低为 8GB，但是对于极大规模的模型，即使使用 Activation checkpointing 激活内存也会相当的大。
 
-> **Q：什么是 Activations？**  
-> 绝大部分读者在初次读到这个概念时可能比较困惑。我的解释如下：  
-> - 在神经网络中，Activations 是指在每一层的神经元上进行计算的结果。  
-> - Activations 是在网络的**前向传播**阶段产生的，这是神经网络预测的阶段。在反向传播阶段，模型将结合梯度和这些 Activations 来更新网络的参数。（也就是说 Activations 的生命周期从前向传播开始到反向传播结束，清楚这个概念**有助于了解**后续在 Residual States Memory 上的优化）  
-> **Q：什么是 Activation Checkpointing？**  
-> 其具体内容为：在前向传递中只保存网络中特定点（即 checkpoint）的 Activation，并在反向传播期间重新计算所需的 Activations。这种方法的代价是额外的计算时间，因为某些激活需要在反向传播过程中重新计算。在处理巨大的神经网络和长序列时非常有用，因为它可以显著减少所需的内存占用。  
-> 进行一个小拓展， Checkpointing 如何选择保留哪些 checkpoints 呢？随机显然是不可取的，我们的基本理念是：“保存网络中计算代价高但内存占用小的层的 Activations”，**具体的策略可以是固定的或者启发式的**。
+!!! question "什么是 Activations？"
+
+    绝大部分读者在初次读到这个概念时可能比较困惑。我的解释如下：
+
+    - 在神经网络中，Activations 是指在每一层的神经元上进行计算的结果。
+    - Activations 是在网络的**前向传播**阶段产生的，这是神经网络预测的阶段。在反向传播阶段，模型将结合梯度和这些 Activations 来更新网络的参数。（也就是说 Activations 的生命周期从前向传播开始到反向传播结束，清楚这个概念**有助于了解**后续在 Residual States Memory 上的优化）
+
+!!! question "什么是 Activation Checkpointing？"
+
+    其具体内容为：在前向传递中只保存网络中特定点（即 checkpoint）的 Activation，并在反向传播期间重新计算所需的 Activations。这种方法的代价是额外的计算时间，因为某些激活需要在反向传播过程中重新计算。在处理巨大的神经网络和长序列时非常有用，因为它可以显著减少所需的内存占用。
+
+    进行一个小拓展， Checkpointing 如何选择保留哪些 checkpoints 呢？随机显然是不可取的，我们的基本理念是：“保存网络中计算代价高但内存占用小的层的 Activations”，**具体的策略可以是固定的或者启发式的**。
 
 ### 3.2.3 Temporary buffers
 
@@ -104,13 +109,17 @@ $$
 
 ![](./assets/zero-06.jpg)
 
-> **Q：一个自然的问题是，内存碎片是怎么产生的呢？为什么 PyTorch/TensorFlow 不会去管理呢？**  
-> 给出一个个人的解释（可以结合上图来看）。记得前文中在 Activation 中的提醒嘛？Activations 的生命周期是从某一次前向传播生成开始，到该次反向传播计算参数更新后结束。在理想情况下 Activations 占用的内存是连续的，但是由于 Activation checkpointing 的存在，其中某些 Activations 会被释放，也就是他们提前结束了生命周期。这时候被选为 checkpoints 的 Activations 张量还没有被释放，这些 checkpoints 实际上就把内存划分成多个不连续的碎片。  
-> 而深度学习框架之所以不会解决这些事情也是可以理解的，作为深度参与过神经网络框架开发的人来说，我们在进行这些策略的制定时会非常小心：  
-> **- 现有策略**：框架可以已经有非常可用的内存管理策略，或者框架基于某些其他的内存管理策略。  
-> **- 性能考虑**：内存碎片整理（即重新组织内存以减少碎片）是一个计算密集型的操作，可能会影响训练性能。因此，框架可能会避免频繁地进行这种操作。  
-> **- 复杂性与可用性**：内存管理是一个非常复杂的问题，也是很重要的问题。尽管我们在设计时会尽力地在内存管理上做了很多优化，但我们会在性能、内存使用效率和编程复杂性之间进行权衡。  
-> 如同强大的编译器可能无法优化一些显而易见的代码，CSAPP 中说过编译器的优化永远无法替代人的作用，想要优化需要我们设计专门的内存分配器/策略。
+!!! question "内存碎片怎么产生、为什么框架不管理？"
+
+    给出一个个人的解释（可以结合上图来看）。记得前文中在 Activation 中的提醒嘛？Activations 的生命周期是从某一次前向传播生成开始，到该次反向传播计算参数更新后结束。在理想情况下 Activations 占用的内存是连续的，但是由于 Activation checkpointing 的存在，其中某些 Activations 会被释放，也就是他们提前结束了生命周期。这时候被选为 checkpoints 的 Activations 张量还没有被释放，这些 checkpoints 实际上就把内存划分成多个不连续的碎片。
+
+    而深度学习框架之所以不会解决这些事情也是可以理解的，作为深度参与过神经网络框架开发的人来说，我们在进行这些策略的制定时会非常小心：
+
+    - **现有策略**：框架可以已经有非常可用的内存管理策略，或者框架基于某些其他的内存管理策略。
+    - **性能考虑**：内存碎片整理（即重新组织内存以减少碎片）是一个计算密集型的操作，可能会影响训练性能。因此，框架可能会避免频繁地进行这种操作。
+    - **复杂性与可用性**：内存管理是一个非常复杂的问题，也是很重要的问题。尽管我们在设计时会尽力地在内存管理上做了很多优化，但我们会在性能、内存使用效率和编程复杂性之间进行权衡。
+
+    如同强大的编译器可能无法优化一些显而易见的代码，CSAPP 中说过编译器的优化永远无法替代人的作用，想要优化需要我们设计专门的内存分配器/策略。
 
 ### 3.3 Memory Summary
 
@@ -191,10 +200,14 @@ $$
 
 而 AllReduce 实际上是分为 ReduceScatter 和 AllGather 两步操作的（**参考**附录B. Ring AllReduce Operation），这两步如果我们都使用最优的实现方式也就是：Ring-RedcueScatter 和 Ring-AllGather，那么单个设备在 Ring-RedcueScatter 或者 Ring-AllGather 的过程中，都会有 $\Psi$ 的通信量。整个AllReduce 的单显卡通信量为 $2\times \Psi$ 。
 
-> 其实这里有一个很关键的分析，我们要理解传统 DP 每一步通信的目的：  
-> - ReduceScatter: 把 Gradient 切好平均好放在每个设备上。  
-> - AllGather: 把计算好的 Gradient 分发到每张卡上。  
-> 其实，在 ReducScatter 之后，每张卡上就足够进行独立的模型更新了。因为你有 Optimizer Sates 和平均后的 Gradient，你可以更新完对应部分的模型参数然后通过 AllGather 分发。ZeRO 正是抓住了这部分的冗余才有了后续的优化。
+!!! note "传统 DP 每一步通信目的分析"
+
+    其实这里有一个很关键的分析，我们要理解传统 DP 每一步通信的目的：
+
+    - ReduceScatter: 把 Gradient 切好平均好放在每个设备上。
+    - AllGather: 把计算好的 Gradient 分发到每张卡上。
+
+    其实，在 ReducScatter 之后，每张卡上就足够进行独立的模型更新了。因为你有 Optimizer Sates 和平均后的 Gradient，你可以更新完对应部分的模型参数然后通过 AllGather 分发。ZeRO 正是抓住了这部分的冗余才有了后续的优化。
 
 ### $P_{os}$ **通信量分析**
 
@@ -237,7 +250,9 @@ $$
 
 其实这张图很早就绘制完成了，但是我在绘制的过程中有一些疑惑，我反复翻阅了几遍论文，DeepSpeed 的官方 Doc 并且还提了一个很傻逼的 issue（目前没用回应 TAT）。所以我在这里公开一下我的疑问，也许对你的理解有帮助。
 
-> 问题是：在 $P_{os + g}$ 时我们发现，在反向传播得到梯度后，我们需要一次 ReduceScatter 帮这些梯度找到对应的更新参数。乍一听很合理，但是我想知道，通常情况下 Gradient，Model Parameters 以及 Optimizer States 应该是有具体的映射。从最简单的模型来说，我们完全可以在 partition 的时候把 Gradient，Model Paramenters 按照对应关系进行划分，从而避免这次 ReduceScatter。这样通信量直接变成了原来的一半，Amazing，新的论文在朝我挥手 ！
+!!! question "能否按对应关系划分以避免 ReduceScatter？"
+
+    问题是：在 $P_{os + g}$ 时我们发现，在反向传播得到梯度后，我们需要一次 ReduceScatter 帮这些梯度找到对应的更新参数。乍一听很合理，但是我想知道，通常情况下 Gradient，Model Parameters 以及 Optimizer States 应该是有具体的映射。从最简单的模型来说，我们完全可以在 partition 的时候把 Gradient，Model Paramenters 按照对应关系进行划分，从而避免这次 ReduceScatter。这样通信量直接变成了原来的一半，Amazing，新的论文在朝我挥手 ！
 
 实际上并不是这样的 /(ㄒoㄒ)/\~~，我把自己给绕了进去，参考原文：
 
