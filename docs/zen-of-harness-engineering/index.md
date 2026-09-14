@@ -61,7 +61,7 @@ hide:
 
 ### :material-progress-wrench: [Harness 优化实践：Agent 工具优化｜agy-staff 迭代随笔](./agy-staff-iteration/)
 
-> *"可观测是一种能力，但不意味着需要一直观测。"*
+> *"工具要提供必要的、有限制的、可以渐进式披露的上下文。"*
 
 记录 agy-staff 从 0.4 到 0.7 的迭代演进：允许脏工作区继续任务、引入流式进展 observe 与 attention lease 机制、以及 `/agy:lead` 编排模式。从外部插件与宿主协作的实战痛点出发，探讨由 Agent 决策、支持渐进式披露的 Agent-native tools 设计取舍。
 
