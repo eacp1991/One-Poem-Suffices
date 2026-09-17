@@ -96,3 +96,13 @@ AI Coding 投资心得、Claude 被封后的"戒断反应"、以及对 AI 时代
 红杉 AI Ascent 2026 的 Demis Hassabis 访谈观感。记录四个让我心潮澎湃的点：AI for science 的元路径、learned simulator 解锁不可实验的复杂系统、信息作为更基础的视角、康德与斯宾诺莎与"阅读宇宙的语言"。
 
 :octicons-clock-24: 12 min &nbsp; [:octicons-arrow-right-24: 阅读全文](./demis-three-quarters-agi/)
+
+---
+
+### :material-palette-outline: [博客、美学与品味](./blog-aesthetics-taste/)
+
+> *"有人说，AI 时代，品味是人难以被替代的一部分。"*
+
+新站上线的随笔。从 ACM 题解到《一篇就够了》，写博客与做设计其实是同一件事：反复问读者会不会困惑。而品味在 RSI 之后也许只是人的先验，是最后被吞噬的那一个。
+
+:octicons-clock-24: 7 min &nbsp; [:octicons-arrow-right-24: 阅读全文](./blog-aesthetics-taste/)
