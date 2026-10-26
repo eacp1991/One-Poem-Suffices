@@ -35,11 +35,11 @@ In the baseline's specific tool call log, there is a very obvious string of `rg 
     `rg` ([ripgrep](https://github.com/BurntSushi/ripgrep)) is a command-line search tool that does the same job as traditional `grep`: finding matching lines across a bunch of files by pattern (regular expression). It is much faster than grep and skips files in `.gitignore` by default, which has made it the go-to choice for coding agents searching through codebases. Codex's model prompt explicitly states *"prefer using `rg` ... because `rg` is much faster than alternatives like `grep`"* ([`base_instructions`](https://github.com/openai/codex/blob/cca16a10878202cb2f6e9666b6b4330329ea7e65/codex-rs/models-manager/models.json#L56), a line present in the prompts across model generations).
 
     Three ways of using it will come up repeatedly in this post:
-    
+
     - `-n` (`--line-number`): returns the **full content of matching lines**, along with line numbers;
     - `-l` (`--files-with-matches`): searches file contents, but only returns **which files contain a match**, without returning the matching lines;
     - `--files`: does not search file contents at all, only listing the file paths that `rg` considers in scope for searching. It recursively traverses directories and respects `.gitignore` by default, so agents often use it to first see what candidate files exist in a project; if written as `rg --files | rg 'prompt'`, the second `rg` is filtering those path strings for filenames containing `prompt`.
-    
+
     For the same goal, `--files`, `-l`, and `-n` write completely different orders of magnitude into the context: `--files` exposes only the file list, `-l` exposes only the file paths with content hits, and `-n` brings back the content of every single matching line. When a pattern is written broadly, the output of `-l` is often one to two orders of magnitude smaller than `-n`; which one the agent picks directly determines how much content a single search writes into the context.
 
 You can see that in Codex's searches, casing, aliases, and abbreviations are all chained together into a single pattern, trying to find everything in one shot. The raw return of this kind of search easily runs from tens of thousands to over two hundred thousand tokens, and the trajectory shows that every single one of them got truncated down to around 10,000 tokens: the largest raw return was **254k tokens**, of which only 10k made it into the model's hands. For the five most intense overly broad searches, the comparison between raw returned tokens and tokens actually visible to the model looks like this:
@@ -137,7 +137,7 @@ Specifically, Claude Code designed the Explore Agent with the following:
 - **A dedicated read-only system prompt**, giving the Agent a concrete identity and execution boundary:
 
     > *"You are a file search specialist... This is a READ-ONLY exploration task. You are STRICTLY PROHIBITED from: Creating new files... Modifying existing files..."*
-    
+
 - **A tool allowlist**: modification tools like Edit / Write / Agent are disabled directly from the toolset, enforcing read-only behavior at both the prompt layer and the harness layer;
 
 - In the main agent's `Agent` tool description, there is a `whenToUse` field telling the model when to invoke it:
