@@ -81,7 +81,7 @@ In every GitHub project I maintain long-term, I keep a Shared Context Folder, wh
 
 The goal here is not to hand the Agent a thousand-page manual, but to let it know where to look for long-term facts about the project. Before implementation, the Agent first updates the Design and Implementation Plan; after implementation is finished, it writes key progress and new decisions back into the folder. In this way, the filesystem becomes shared project memory across sessions.
 
-For more on this, you can refer to the discussion on Skills and Context in [Agent Skills: One Poem Suffices](../../one-poem-suffices/agent-skills/).
+For more on this, you can refer to the discussion on Skills and Context in [One Poem Suffices: Agent Skills](../../one-poem-suffices/agent-skills/).
 
 ### 3.2 Using GitHub Issues and PRs for Tracking and Hand-off
 
@@ -104,11 +104,11 @@ At this point, `grill-me` is to me more than just a prompt that "makes the Agent
 
 The Shared Context Folder preserves long-term memory, Issues and PRs handle Tracking and Hand-off, and `grill-me`-style interaction eliminates critical ambiguities before action is taken. All three layers ultimately address the same problem: **as Agents act faster and faster, how can humans continue to stay accountable for the direction?**
 
-These are just some of my personal practices. I hope to write a more complete piece later on: *Harness Engineering: One Poem Suffices*.
+These are just some of my personal practices. I hope to write a more complete piece later on: *One Poem Suffices: Harness Engineering*.
 
 ## Related Reading
 
 - [Claude Code Source Distillation: A Practical Record of Harness Engineering](../claudecode-distillation-practice/)
 - [Thinking in Context: When Do You Need Multi-Agent Systems?](../../thinking-in-context/when-multi-agent/)
-- [Context Engineering: One Poem Suffices](../../../one-poem-suffices/context-engineering/)
-- [Agent Skills: One Poem Suffices](../../one-poem-suffices/agent-skills/)
+- [One Poem Suffices: Context Engineering](../../../one-poem-suffices/context-engineering/)
+- [One Poem Suffices: Agent Skills](../../one-poem-suffices/agent-skills/)

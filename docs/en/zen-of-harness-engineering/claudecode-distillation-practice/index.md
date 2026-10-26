@@ -36,7 +36,7 @@ The core idea is separating review and execution across two distinct model famil
 
 As for why separate agent roles? For the exact same reason you don't let the implementer review their own code. Codex reviews against the source code with fresh eyes; Claude Code executes modifications carrying a full understanding of prior decisions. Neither agent can see the other's session. (Anthropic mentioned a similar concept in [Building multi-agent systems: When and how to use them](https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them): *One multi-agent pattern that consistently works well across domains is the **verification subagent**. This is a dedicated agent whose sole responsibility is testing or validating the main agent's work.*)
 
-So what do they coordinate through? The filesystem. Using filenames plus simple Read Tools is low-cost and loses zero information. (This design echoes Anthropic's principle in [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system): **Subagent output to a filesystem to minimize the 'game of telephone.'** If interested, check out: [Multi-Agent Systems: One Poem Suffices.](https://keli-wen.github.io/One-Poem-Suffices/one-poem-suffices/multi-agent-system/)). Since this was a documentation-oriented task rather than a coding task, top-level orchestration (getting the two agents to interact) was still controlled by me.
+So what do they coordinate through? The filesystem. Using filenames plus simple Read Tools is low-cost and loses zero information. (This design echoes Anthropic's principle in [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system): **Subagent output to a filesystem to minimize the 'game of telephone.'** If interested, check out: [One Poem Suffices: Multi-Agent Systems](https://keli-wen.github.io/One-Poem-Suffices/one-poem-suffices/multi-agent-system/)). Since this was a documentation-oriented task rather than a coding task, top-level orchestration (getting the two agents to interact) was still controlled by me.
 
 Before officially starting work, I had Codex generate the entire harness infrastructure in one go. The design goal for this set of files was: enable a clean agent with no context from the current conversation to step in directly, knowing where to read, what to do first, where to write upon completion, and how to conduct reviews.
 
@@ -183,8 +183,8 @@ I haven't posted in a long time; next, I will likely do my best to update blog p
 ## References
 
 - [Agentic Harness Patterns Skill](https://github.com/keli-wen/agentic-harness-patterns-skill) — Distillation artifact
-- [Context Engineering: One Poem Suffices](../../../one-poem-suffices/context-engineering/) — Basis vector 1
-- [Just-in-Time Context: One Poem Suffices](../../../one-poem-suffices/just-in-time-context/) — Basis vector 2
+- [One Poem Suffices: Context Engineering](../../../one-poem-suffices/context-engineering/) — Basis vector 1
+- [One Poem Suffices: Just-in-Time Context](../../../one-poem-suffices/just-in-time-context/) — Basis vector 2
 - [Thinking in Context: Context Engineering in Codex](../../../thinking-in-context/context-engineering-from-codex/) — Basis vector 3
 - [Anthropic: Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
 - [OpenAI: Harness engineering](https://openai.com/index/harness-engineering/)

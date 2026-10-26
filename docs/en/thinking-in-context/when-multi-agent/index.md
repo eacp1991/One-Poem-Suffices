@@ -8,7 +8,7 @@
 
 Multi-agent architectures are moving from experiments into production. With Kimi's [Agent Swarms](https://www.kimi.com/blog/agent-swarm) and Anthropic's [Agent Teams](https://code.claude.com/docs/en/agent-teams), everyone is experimenting with more complex agent combinations.
 
-Last July, I wrote [Multi-Agent System: One Poem Suffices](../../../one-poem-suffices/multi-agent-system/), which focused on multi-agent architectures in Deep Research scenarios and covered the What, Why, and How. However, I missed an even more fundamental prerequisite question: **When should you use a multi-agent system?**
+Last July, I wrote [One Poem Suffices: Multi-Agent System](../../../one-poem-suffices/multi-agent-system/), which focused on multi-agent architectures in Deep Research scenarios and covered the What, Why, and How. However, I missed an even more fundamental prerequisite question: **When should you use a multi-agent system?**
 
 Ignoring this question can lead to pouring massive amounts of effort into low-ROI optimizations. In their latest blog post, [Building multi-agent systems: When and how to use them](https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them), Anthropic also candidly admits:
 
@@ -198,7 +198,7 @@ Finally, I'll wrap up with a quote from Anthropic. This line has appeared consis
 - [Anthropic: Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) (2025)
 - [Claude Code Docs: Agent Teams](https://code.claude.com/docs/en/agent-teams) (2026)
 - [Cognition: Don't Build Multi-Agents](https://cognition.ai/blog/dont-build-multi-agents) (2025.06)
-- [My Blog: Multi-Agent System, One Poem Suffices](../../../one-poem-suffices/multi-agent-system/)
-- [My Blog: Context Engineering, One Poem Suffices](../../../one-poem-suffices/context-engineering/)
-- [My Blog: Just-in-Time Context, One Poem Suffices](../../../one-poem-suffices/just-in-time-context/)
+- [My Blog: One Poem Suffices: Multi-Agent System](../../../one-poem-suffices/multi-agent-system/)
+- [My Blog: One Poem Suffices: Context Engineering](../../../one-poem-suffices/context-engineering/)
+- [My Blog: One Poem Suffices: Just-in-Time Context](../../../one-poem-suffices/just-in-time-context/)
 - [My Blog: Thinking in Context: Context Engineering in Codex](../../../thinking-in-context/context-engineering-from-codex/)

@@ -67,7 +67,7 @@ Codex's truncation also has some harness optimization: the first line reads *"Wa
 
 But knowing it was truncated and being able to recover it are two different things. When Claude Code truncates, it saves the full output to a file and leaves the model a path, so it can Read/grep it back anytime later; Codex doesn't keep a copy of the truncated portion, so if the model wants it, the only option is to re-run a more precise command. **Truncation itself is unavoidable; the difference between the two sides lies in whether the truncated content can still be re-accessed**.
 
-In fact, this idea already showed up earlier when Claude built its experimental [Context Editing Tools](https://platform.claude.com/docs/en/build-with-claude/context-editing), which I explained in another post, [JIT Context: One Poem Suffices](../../../one-poem-suffices/just-in-time-context/#31-compress), though **the price of reclaiming context window space is invalidating the prompt cache, which is a tough tradeoff**, so I rarely see Context editing applied in practice.
+In fact, this idea already showed up earlier when Claude built its experimental [Context Editing Tools](https://platform.claude.com/docs/en/build-with-claude/context-editing), which I explained in another post, [One Poem Suffices: JIT Context](../../../one-poem-suffices/just-in-time-context/#31-compress), though **the price of reclaiming context window space is invalidating the prompt cache, which is a tough tradeoff**, so I rarely see Context editing applied in practice.
 
 <img src="./assets/truncation-lossy-vs-recoverable.svg" alt="Two ways of truncating the same oversized output: Codex keeps head and tail, drops the middle, and saves no copy; Claude Code keeps the tail and writes a full copy to disk, ready to be retrieved anytime" style="width:100%;max-width:880px;display:block;margin:0 auto;" />
 
@@ -124,7 +124,7 @@ The fundamental limitation lies in the task orchestration structure: as long as 
 
 From Claude's trajectory, we can see: **the main Agent does not do exploration**. In the Opus experiment, the main Agent made 4 tool calls in total, all of them `Agent`, handing the actual file-reading and code-searching work off to 4 read-only Explore subagents running in parallel. The main thread received only a few hundred words of summary from each subagent, then synthesized them into the final answer.
 
-I touched on this mechanism in [Multi-Agent System: One Poem Suffices](../../../one-poem-suffices/multi-agent-system/): subagents act as **intelligent filters**. They digest massive amounts of raw information in parallel inside their own separate contexts and hand only the most critical insights back to the main agent; the main agent doesn't have to read every raw document itself, staying focused on synthesis and decision-making. In this experiment, exploration inevitably produces tons of one-off intermediate output (wrongly guessed search patterns, files read that turned out to be irrelevant); isolating that inside the subagents' contexts preserves the signal-to-noise ratio in the main agent. At the same time, by breaking a large task down into multiple subtasks and assigning them to multiple subagents with independent context windows, a multi-agent system **is in essence an architecture for scaling total token usage with high efficiency**, letting you pour more effective compute (tokens) into the problem.
+I touched on this mechanism in [One Poem Suffices: Multi-Agent System](../../../one-poem-suffices/multi-agent-system/): subagents act as **intelligent filters**. They digest massive amounts of raw information in parallel inside their own separate contexts and hand only the most critical insights back to the main agent; the main agent doesn't have to read every raw document itself, staying focused on synthesis and decision-making. In this experiment, exploration inevitably produces tons of one-off intermediate output (wrongly guessed search patterns, files read that turned out to be irrelevant); isolating that inside the subagents' contexts preserves the signal-to-noise ratio in the main agent. At the same time, by breaking a large task down into multiple subtasks and assigning them to multiple subagents with independent context windows, a multi-agent system **is in essence an architecture for scaling total token usage with high efficiency**, letting you pour more effective compute (tokens) into the problem.
 
 > If you use Claude Code regularly, you'll notice that when you open a fresh session and ask your first question, it very naturally invokes the Explore Agent.
 
@@ -227,7 +227,7 @@ The tradeoff is higher cost. It rose from \$2.73 to \$5.30, nearly doubling, put
 
 This experiment was very rough, with only one run per setting. And there is one more setting I didn't test: keeping both the hardcoded search rules and multi-agent delegation at the same time, which might make delegation a bit cheaper—I'll leave that to interested readers~
 
-Some simple tasks don't need a multi-agent architecture at all; see [When Do You Need Multi-Agent Systems?](../../thinking-in-context/when-multi-agent/). For more on multi-agent architecture itself, see [Multi-Agent System: One Poem Suffices](../../../one-poem-suffices/multi-agent-system/).
+Some simple tasks don't need a multi-agent architecture at all; see [When Do You Need Multi-Agent Systems?](../../thinking-in-context/when-multi-agent/). For more on multi-agent architecture itself, see [One Poem Suffices: Multi-Agent System](../../../one-poem-suffices/multi-agent-system/).
 
 ## Conclusion
 
@@ -264,7 +264,7 @@ Principle: The main agent's context is a scarce resource, meant to hold only con
 
 **Previous Posts**
 
-- [Context Engineering: One Poem Suffices](../../../one-poem-suffices/context-engineering/) · The four-pillar framework; this post is a field validation of Isolate
+- [One Poem Suffices: Context Engineering](../../../one-poem-suffices/context-engineering/) · The four-pillar framework; this post is a field validation of Isolate
 - [Thinking in Context: Context Engineering in Codex](../../../thinking-in-context/context-engineering-from-codex/) · The append-only and compaction school of thought
 - [Thinking in Context: When Do You Need Multi-Agent Systems?](../../thinking-in-context/when-multi-agent/) · A decision framework based on context coupling
 - [Distilling Claude Code Source Code into an Agent Skill](../claudecode-distillation-practice/) · Previous installment on harness engineering in practice

@@ -34,7 +34,7 @@ Later, though, I ran into a problem in actual use: when you wanted to continue m
 
 So I reflected on my design and realized it wasn't quite agent-friendly enough. At the tool layer, it pre-injected an assumption: "As long as uncommitted changes exist, it's not suitable to continue execution." But this condition couldn't distinguish which changes were the user's other work and which happened to be the exact content the current task needed to keep working on.
 
-This reminded me of primitive RAG Systems, or rather, the question I discussed earlier in [Just-in-Time Context, One Poem Suffices](../../../one-poem-suffices/just-in-time-context/): **Who decides the next step? Push vs Pull Mode** Some judgments can indeed be fixed in advance, but others need to be made in conjunction with the task context. Making these judgments for the Agent too early can restrict situations it would otherwise be capable of handling (which goes against the bitter lesson).
+This reminded me of primitive RAG Systems, or rather, the question I discussed earlier in [One Poem Suffices: Just-in-Time Context](../../../one-poem-suffices/just-in-time-context/): **Who decides the next step? Push vs Pull Mode** Some judgments can indeed be fixed in advance, but others need to be made in conjunction with the task context. Making these judgments for the Agent too early can restrict situations it would otherwise be capable of handling (which goes against the bitter lesson).
 
 So in 0.4.4, I removed this blanket rejection check, allowing the implementer to run tasks on a dirty working tree while passing the existing changes as context to the executing Agent. Changes clearly belonging to the task can continue to be worked on; if unrelated work is involved, ownership is unclear, or the user's changes might be overwritten, it is required to check and clarify first.
 
@@ -115,7 +115,7 @@ What's quite interesting is that agy-staff plugs into the host through Skills an
 
     I expect models will get better and better at some classic orchestration patterns as training progresses, but there is a time lag here. Especially for problems where the division of labor isn't so obvious and that carry personal preferences and specific context, being able to design the orchestration yourself can still make a very practical difference. (Recently I saw that OpenAI scheduled nearly 10k agents to solve the NS problem, which must have involved quite complex orchestration patterns, definitely not a simple orchestrator-worker setup—for instance, hierarchical orchestration or A2A decentralized society orchestration?)
 
-    So my interest lies more in Harness and Orchestration: I feel these are areas that, at least for now, complement model capabilities~ On orchestration, I'm also planning to write a standalone piece later, *Agent Orchestration, One Poem Suffices*. (Digging all kinds of holes for myself to fill later)
+    So my interest lies more in Harness and Orchestration: I feel these are areas that, at least for now, complement model capabilities~ On orchestration, I'm also planning to write a standalone piece later, *One Poem Suffices: Agent Orchestration*. (Digging all kinds of holes for myself to fill later)
 
 ![/agy:lead orchestration mode](./assets/exec-lead.jpg)
 
