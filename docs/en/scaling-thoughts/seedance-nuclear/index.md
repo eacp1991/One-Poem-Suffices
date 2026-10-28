@@ -34,4 +34,4 @@ For now, all I can do is try to minimize distractions as much as possible, and r
 - [**Inside OpenAI's in-house data agent**](https://openai.com/index/inside-our-in-house-data-agent/) — A top company sharing the internal details of building an agent; way too valuable.
 - [**The Bitter Lesson**](http://www.incompleteideas.net/IncIdeas/BitterLesson.html) — Very valuable for thinking about building agents, and even medium-to-long-term personal development.
 
-I briefly touched on some of these thoughts in [Scaling Thoughts: When Tokens Become the New Means of Production](https://zhuanlan.zhihu.com/p/1995936809184683260)~ Always happy to chat and exchange ideas!
+I briefly touched on some of these thoughts in [Scaling Thoughts: When Tokens Become the New Means of Production](../token-as-resource/)~ Always happy to chat and exchange ideas!

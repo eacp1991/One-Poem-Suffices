@@ -110,5 +110,5 @@ These are just some of my personal practices. I hope to write a more complete pi
 
 - [Claude Code Source Distillation: A Practical Record of Harness Engineering](../claudecode-distillation-practice/)
 - [Thinking in Context: When Do You Need Multi-Agent Systems?](../../thinking-in-context/when-multi-agent/)
-- [One Poem Suffices: Context Engineering](../../../one-poem-suffices/context-engineering/)
+- [One Poem Suffices: Context Engineering](../../one-poem-suffices/context-engineering/)
 - [One Poem Suffices: Agent Skills](../../one-poem-suffices/agent-skills/)

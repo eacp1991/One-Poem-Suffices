@@ -30,7 +30,7 @@
 
 Anthropic 在博客中提到：如同人类的工作记忆容量有限，LLM 也拥有所谓的“**注意力预算**”，在解析长上下文时会消耗这一资源，每一个新引入的 token 都会占用一定的预算。这就更加突显了上下文工程的重要心，即动态规划和维护最优的输入 token 集合，不浪费注意力预算。这种注意力（Attention）的稀缺源自 Transformer 架构的限制，Transformer 允许每个 token 去关注整个上下文中其他所有 token，这就意味着对于 N 个 token，将会产生 N^2 个两两交互的关系。
 
-随着长度增加，这种指数级的交互需求导致注意力不可避免地被“稀释”。加之训练数据中长序列的天然稀缺，以及位置编码插值带来的感知模糊 [[1]](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)，模型在处理长上下文时性能会呈现出梯度式的衰减——即虽未崩溃，但在长程检索与推理的精度上已大打折扣，而 agent 架构不可避免的引入长上下文（“In our data, agents typically use about 4× more tokens than chat interactions, and multi-agent systems use about 15× more tokens than chats. ” —— Anthropic [[2]](https://www.anthropic.com/engineering/multi-agent-research-system)）。这也是上下文工程存在的根本意义：**对抗这种架构性的边际收益递减，构建强大的 Agnetic system**。
+随着长度增加，这种平方级的交互需求导致注意力不可避免地被“稀释”。加之训练数据中长序列的天然稀缺，以及位置编码插值带来的感知模糊 [[1]](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)，模型在处理长上下文时性能会呈现出梯度式的衰减——即虽未崩溃，但在长程检索与推理的精度上已大打折扣，而 agent 架构不可避免的引入长上下文（“In our data, agents typically use about 4× more tokens than chat interactions, and multi-agent systems use about 15× more tokens than chats. ” —— Anthropic [[2]](https://www.anthropic.com/engineering/multi-agent-research-system)）。这也是上下文工程存在的根本意义：**对抗这种架构性的边际收益递减，构建强大的 Agnetic system**。
 
 ![context_eng_overview](./assets/context_eng_overview.png)
 

@@ -8,7 +8,7 @@
 
 Multi-agent architectures are moving from experiments into production. With Kimi's [Agent Swarms](https://www.kimi.com/blog/agent-swarm) and Anthropic's [Agent Teams](https://code.claude.com/docs/en/agent-teams), everyone is experimenting with more complex agent combinations.
 
-Last July, I wrote [One Poem Suffices: Multi-Agent System](../../../one-poem-suffices/multi-agent-system/), which focused on multi-agent architectures in Deep Research scenarios and covered the What, Why, and How. However, I missed an even more fundamental prerequisite question: **When should you use a multi-agent system?**
+Last July, I wrote [One Poem Suffices: Multi-Agent System](../../one-poem-suffices/multi-agent-system/), which focused on multi-agent architectures in Deep Research scenarios and covered the What, Why, and How. However, I missed an even more fundamental prerequisite question: **When should you use a multi-agent system?**
 
 Ignoring this question can lead to pouring massive amounts of effort into low-ROI optimizations. In their latest blog post, [Building multi-agent systems: When and how to use them](https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them), Anthropic also candidly admits:
 
@@ -18,9 +18,9 @@ Ignoring this question can lead to pouring massive amounts of effort into low-RO
 
 So in this post, I want to seriously think through the "When". Let's do some Thinking in Context and ask: **When should we use a multi-agent architecture?**
 
-- In [Context Engineering](../../../one-poem-suffices/context-engineering/), we defined the four pillars of context engineering: **Write, Select, Compress, Isolate**.
-- In [JIT Context](../../../one-poem-suffices/just-in-time-context/), we mainly dove deep into Select and Compress/Write, while only briefly touching upon Isolate. This post is an expansion on Isolate: when optimization techniques within a single context space are exhausted, when do we need to scale out to multiple spaces?
-- In the previous installment of Thinking in Context, starting from [Codex's engineering practices](../../../thinking-in-context/context-engineering-from-codex/), we looked at engineering practices within a single context space (Prompt Cache-friendly context design, Append-only state management).
+- In [Context Engineering](../../one-poem-suffices/context-engineering/), we defined the four pillars of context engineering: **Write, Select, Compress, Isolate**.
+- In [JIT Context](../../one-poem-suffices/just-in-time-context/), we mainly dove deep into Select and Compress/Write, while only briefly touching upon Isolate. This post is an expansion on Isolate: when optimization techniques within a single context space are exhausted, when do we need to scale out to multiple spaces?
+- In the previous installment of Thinking in Context, starting from [Codex's engineering practices](../context-engineering-from-codex/), we looked at engineering practices within a single context space (Prompt Cache-friendly context design, Append-only state management).
 
 **A multi-agent system is, at its core, a system of multiple context spaces.** In this post, I'll try to move from the inside out: shifting from internal optimizations within a single context to the interactions between multiple contexts. **When do you need to scale from one context space to many? What principles should guide that decision?**
 
@@ -34,7 +34,7 @@ In my previous post, we discussed the many advantages of multi-agent systems: em
 
 When is a single context window not enough?
 
-I often run into an issue myself when using Claude Code: when a long conversation accumulates too many traces of early exploration (debugging, failed attempts, rejected plans), the quality of the Agent's subsequent decision-making and reasoning drops noticeably. Sometimes it even repeats paths that have already failed (tip: manually reconstructing a fresh context at this point can often solve the problem quickly). This is actually how [context degradation](../../../one-poem-suffices/context-engineering/#31) manifests inside a single Agent. Spinning off a Sub-agent to complete a subtask in an independent context and return only the result is a form of **active context noise isolation**.
+I often run into an issue myself when using Claude Code: when a long conversation accumulates too many traces of early exploration (debugging, failed attempts, rejected plans), the quality of the Agent's subsequent decision-making and reasoning drops noticeably. Sometimes it even repeats paths that have already failed (tip: manually reconstructing a fresh context at this point can often solve the problem quickly). This is actually how [context degradation](../../one-poem-suffices/context-engineering/#31-what-is-context-degradation) manifests inside a single Agent. Spinning off a Sub-agent to complete a subtask in an independent context and return only the result is a form of **active context noise isolation**.
 
 <div style="text-align: center;">
   <img src="./assets/context-failure-modes.png" alt="Three manifestations of context degradation" style="max-width: 80%;" />
@@ -68,7 +68,7 @@ For example, Sub-agent A chooses a certain data structure, while Sub-agent B unk
 
 !!! note "Echoing the Codex Article"
 
-    This issue is directly related to the Append-only pattern we discussed in [Codex Context Engineering](../../../thinking-in-context/context-engineering-from-codex/). A major reason Codex chooses Append-only over in-place modification is to **preserve the causal chain**—the model needs to know not only "what the current state is," but also "why it is in this state." Splitting up Agents essentially breaks this causal chain: each Sub-agent only sees its own sequence of actions and cannot trace the decision paths of other Agents.
+    This issue is directly related to the Append-only pattern we discussed in [Codex Context Engineering](../context-engineering-from-codex/). A major reason Codex chooses Append-only over in-place modification is to **preserve the causal chain**—the model needs to know not only "what the current state is," but also "why it is in this state." Splitting up Agents essentially breaks this causal chain: each Sub-agent only sees its own sequence of actions and cannot trace the decision paths of other Agents.
 
 ## 2. Context Coupling: Using Coupling as the Criterion for Decomposition
 
@@ -120,7 +120,7 @@ Abstract principles need concrete scenarios to be tested against.
 
 Deep Research is the "ideal type" scenario for multi-agent architectures. Viewed through the lens of context coupling, the reason is straightforward: **research paths are naturally independent**.
 
-Searching for "supply-side analysis of the semiconductor industry" and searching for "demand-side market trends" are two independent paths; Path A does not need to know what Path B has found. Each path generates a massive volume of raw search results (5,000–8,000 tokens of web pages, reports, and news), which is pure noise to the other paths. What ultimately converges back to the Orchestrator might be just 300–500 tokens of key findings per path. This is what I referred to in the [previous post](../../../one-poem-suffices/multi-agent-system/) as "**search as compression**."
+Searching for "supply-side analysis of the semiconductor industry" and searching for "demand-side market trends" are two independent paths; Path A does not need to know what Path B has found. Each path generates a massive volume of raw search results (5,000–8,000 tokens of web pages, reports, and news), which is pure noise to the other paths. What ultimately converges back to the Orchestrator might be just 300–500 tokens of key findings per path. This is what I referred to in the [previous post](../../one-poem-suffices/multi-agent-system/) as "**search as compression**."
 
 <div style="text-align: center;">
   <img src="./assets/deep-research-orchestrator-worker.png" alt="Illustration of the Orchestrator-Worker structure in Deep Research" style="max-width: 75%;" />
@@ -198,7 +198,7 @@ Finally, I'll wrap up with a quote from Anthropic. This line has appeared consis
 - [Anthropic: Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) (2025)
 - [Claude Code Docs: Agent Teams](https://code.claude.com/docs/en/agent-teams) (2026)
 - [Cognition: Don't Build Multi-Agents](https://cognition.ai/blog/dont-build-multi-agents) (2025.06)
-- [My Blog: One Poem Suffices: Multi-Agent System](../../../one-poem-suffices/multi-agent-system/)
-- [My Blog: One Poem Suffices: Context Engineering](../../../one-poem-suffices/context-engineering/)
-- [My Blog: One Poem Suffices: Just-in-Time Context](../../../one-poem-suffices/just-in-time-context/)
-- [My Blog: Thinking in Context: Context Engineering in Codex](../../../thinking-in-context/context-engineering-from-codex/)
+- [My Blog: One Poem Suffices: Multi-Agent System](../../one-poem-suffices/multi-agent-system/)
+- [My Blog: One Poem Suffices: Context Engineering](../../one-poem-suffices/context-engineering/)
+- [My Blog: One Poem Suffices: Just-in-Time Context](../../one-poem-suffices/just-in-time-context/)
+- [My Blog: Thinking in Context: Context Engineering in Codex](../context-engineering-from-codex/)
