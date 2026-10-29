@@ -67,3 +67,12 @@ hide:
 
 :octicons-clock-24: 8 min &nbsp; [:octicons-arrow-right-24: 阅读全文](./agy-staff-iteration/)
 
+---
+
+### :material-chart-box-outline: [agy-staff bench v1: Agent Orchestration 与 Harness 评测分析](./agy-staff-bench-v1/)
+
+> *"任何 Agent Benchmark 测出来的其实都是 Model × Harness 的耦合结果。"*
+
+基于 Harbor 运行 96 次容器化实验，对比 Claude Code 与 Codex 在单点代码修复、仓库问答与深度调研上的主从委派表现，从 Model Family、Harness 与插件自身三个层面复盘轨迹与源码。
+
+:octicons-clock-24: 22 min &nbsp; [:octicons-arrow-right-24: 阅读全文](./agy-staff-bench-v1/)
