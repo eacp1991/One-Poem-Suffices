@@ -1,0 +1,80 @@
+<svg viewBox="0 0 940 276" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-gran">
+  <title id="t-gran">SWE-bench execution granularity comparison: Codex solo 14 steps (499k cache read), Claude solo 25.5 steps (815k cache read), AGY Worker 104.5 steps (first code edit at step 70.5, 6,629k cumulative cache read)</title>
+  <style>
+    .zh   { font-family: "PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif; }
+    .mono { font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; }
+  </style>
+  <defs>
+    <pattern id="dots-gran" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="13" cy="13" r="1" fill="#2B2722" opacity="0.045"/>
+    </pattern>
+  </defs>
+
+  <rect width="940" height="276" fill="#FFFFFF"/>
+  <rect width="940" height="276" fill="url(#dots-gran)"/>
+
+  <!-- 外框卡片 -->
+  <rect x="24" y="18" width="892" height="242" rx="16" fill="#FFFFFF" stroke="#2B2722" stroke-width="1.4"/>
+
+  <!-- 标题栏 -->
+  <text class="zh" x="48" y="49" font-size="14.5" font-weight="600" fill="#2B2722">SWE-bench Execution Granularity Comparison</text>
+  <line x1="48" y1="63" x2="892" y2="63" stroke="#EFE9E1" stroke-width="1.2"/>
+
+  <!-- 表头 -->
+  <text class="zh" x="48"  y="87" font-size="11.5" font-weight="600" fill="#9B948A">Model</text>
+  <text class="zh" x="230" y="87" font-size="11.5" font-weight="600" fill="#9B948A">Steps</text>
+  <text class="zh" x="435" y="87" font-size="11.5" font-weight="600" fill="#9B948A">Per-Step Call Pattern</text>
+  <text class="zh" x="635" y="87" font-size="11.5" font-weight="600" fill="#9B948A">First Code Edit</text>
+  <text class="zh" x="760" y="87" font-size="11.5" font-weight="600" fill="#9B948A">Total Cache Read</text>
+  <line x1="48" y1="99" x2="892" y2="99" stroke="#EFE9E1" stroke-width="1"/>
+
+  <!-- Row 1: Codex solo (Charcoal #202123) -->
+  <circle cx="53" cy="120" r="4" fill="#202123"/>
+  <text class="zh"   x="64" y="124" font-size="13" font-weight="600" fill="#202123">Codex solo</text>
+  <text class="mono" x="64" y="141" font-size="10.5" fill="#5F6368">GPT-6.1 Sol</text>
+
+  <rect x="230" y="122" width="13" height="10" rx="2.5" fill="#202123" opacity="0.85"/>
+  <text class="mono" x="250" y="131" font-size="12.5" font-weight="600" fill="#202123">14 steps</text>
+
+  <text class="zh"   x="435" y="131" font-size="12" fill="#2B2722">Chains commands per step</text>
+
+  <text class="mono" x="635" y="131" font-size="12.5" fill="#2B2722">Step 8.5</text>
+
+  <rect x="760" y="122" width="6" height="10" rx="2" fill="#202123" opacity="0.85"/>
+  <text class="mono" x="773" y="131" font-size="12.5" font-weight="600" fill="#202123">499k</text>
+
+  <line x1="48" y1="153" x2="892" y2="153" stroke="#EFE9E1" stroke-width="1"/>
+
+  <!-- Row 2: Claude solo (Terracotta #D97757 / #B85C39) -->
+  <circle cx="53" cy="172" r="4" fill="#D97757"/>
+  <text class="zh"   x="64" y="176" font-size="13" font-weight="600" fill="#B85C39">Claude solo</text>
+  <text class="mono" x="64" y="193" font-size="10.5" fill="#9B948A">Opus 5.5</text>
+
+  <rect x="230" y="174" width="23" height="10" rx="2.5" fill="#D97757"/>
+  <text class="mono" x="260" y="183" font-size="12.5" font-weight="600" fill="#B85C39">25.5 steps</text>
+
+  <text class="zh"   x="435" y="183" font-size="12" fill="#2B2722">Parallel calls in ~10% of steps</text>
+
+  <text class="mono" x="635" y="183" font-size="12.5" fill="#2B2722">Step 6.5</text>
+
+  <rect x="760" y="174" width="9" height="10" rx="2" fill="#D97757"/>
+  <text class="mono" x="776" y="183" font-size="12.5" font-weight="600" fill="#B85C39">815k</text>
+
+  <line x1="48" y1="205" x2="892" y2="205" stroke="#EFE9E1" stroke-width="1"/>
+
+  <!-- Row 3: AGY Worker (Google Blue #4285F4 / #1A73E8) -->
+  <rect x="38" y="211" width="864" height="41" rx="9" fill="#F5F8FF" stroke="#D2E3FC" stroke-width="1"/>
+  <circle cx="53" cy="224" r="4" fill="#4285F4"/>
+  <text class="zh"   x="64" y="228" font-size="13" font-weight="600" fill="#1A73E8">AGY Worker</text>
+  <text class="mono" x="64" y="244" font-size="10.5" fill="#4285F4">Gemini 3.8 Flash</text>
+
+  <rect x="230" y="226" width="96" height="10" rx="2.5" fill="#4285F4"/>
+  <text class="mono" x="333" y="235" font-size="12.5" font-weight="600" fill="#1A73E8">104.5 steps</text>
+
+  <text class="zh"   x="435" y="235" font-size="12" font-weight="600" fill="#1A73E8">1 tool/step (0% parallel)</text>
+
+  <text class="mono" x="635" y="235" font-size="12.5" font-weight="600" fill="#1A73E8">Step 70.5</text>
+
+  <rect x="760" y="226" width="64" height="10" rx="2" fill="#4285F4"/>
+  <text class="mono" x="831" y="235" font-size="12.5" font-weight="600" fill="#1A73E8">6,629k</text>
+</svg>

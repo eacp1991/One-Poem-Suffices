@@ -75,7 +75,7 @@ Claude 与 Codex 在主模型花费上的差异，主要来自两个 Harness 对
 
 ### 3.2 Coding vs Research：不同领域的编排收益
 
-在之前的 [《Thinking in Context: 何时需要多智能体》](../../thinking-in-context/when-multi-agent/) 中，我曾讨论过为什么不能简单按任务类型一刀切，而要看**上下文耦合度**。如果从图论的视角结合 [《Context Engineering》](../../one-poem-suffices/context-engineering/) 与 Cognition 的 *"Actions carry implicit decisions"* 来看，不同领域的编排效果差异，很大程度上源于它们底层**任务图结构的不同**：
+在之前的 [《Thinking in Context: 何时需要多智能体》](../../thinking-in-context/when-multi-agent/) 中，我曾讨论过为什么不能简单按任务类型一刀切，而要看**上下文耦合度**。如果从图论的视角结合 [《Context Engineering》](../../one-poem-suffices/context-engineering/) 与 Cognition 的 *"Actions carry implicit decisions"* 来看，不同领域的编排效果差异，很大程度上源于它们底层**任务图结构的不同**：（其实这里也是我在 Agent Orchestration 侧的思考）
 
 <img src="./assets/coding-vs-research-delegation.svg" alt="Research 搜索树采样结构与 Coding 动态拓扑依赖图结构的对比" style="width:100%;max-width:880px;display:block;margin:0 auto;" />
 
@@ -98,7 +98,6 @@ Claude 与 Codex 在主模型花费上的差异，主要来自两个 Harness 对
     1. **Claude 改写时容易漏掉规则：** Claude 写 Brief 时习惯用自己的话归纳任务，20 次派发里漏了 7 次“禁止直接搜索测试集答案表”的要求。结果在一道调研题中，`agy` 顺着搜索链接去 HuggingFace 下载了该评测集的标准答案 CSV；好在 Claude 验收时发现了问题，丢弃报告并自己重新查了一遍原始文档。
     2. **Codex 照抄时容易把主从指令混在一起：** Codex 一次没漏规则，却在 3 道题里把测试 Prompt 末尾写给 Host 的调度提示（“请使用 `/agy:lead` 技能委派本任务”）也原样抄进了给 Worker 的 Prompt 中，导致 `agy` 自己加载了 `lead` 技能，**在同一个工作目录里又启动了第二个 `nested-agy`**。
 
-    这说明给 Host 的编排指令和给 Worker 的任务要求需要在结构上分开；而像“禁止递归调用”这类限制不能只靠 Prompt，需要在代码层通过环境变量（如检测到 `AGY_STAFF_DEPTH > 0` 直接退出）做拦截。
 
 ## 4. Trajectory Learning: 从 Web Tools 看 Harness 的上下文工程
 
